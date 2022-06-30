@@ -1,0 +1,18 @@
+.entry {
+  padding-top: 5px;
+}
+
+.invalid {
+  border: 3px solid #aa0b20;
+}
+
+.invalid[type="email"]:focus,
+.invalid[type="password"]:focus {
+  border-color: #aa0b20;
+  box-shadow: none;
+  outline: 0 none;
+}
+
+.invalid-msg {
+  color: #aa0b20;
+}
