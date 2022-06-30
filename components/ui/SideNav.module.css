@@ -1,0 +1,21 @@
+.nav-container {
+  width: 100%;
+  min-width: 50px;
+  max-width: 200px;
+  height: fit-content;
+  margin-top: 10px;
+  border-bottom: 1px solid gray;
+  border-right: 1px solid gray;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  padding-left: 10px;
+}
