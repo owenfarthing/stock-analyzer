@@ -1,12 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { dummyData } from "../components/home/experiments/dummy-data";
 
 const initialState = {
+  items: dummyData,
+  selectedItems: {},
+  selectAll: false,
+  currentItem: null,
+  sortDesc: true,
   synopsisShowing: false,
   deleteModalShowing: false,
-  currentItem: null,
-  selectedItems: {},
-  sortDesc: true,
-  selectAll: false,
 };
 
 const experimentsSlice = createSlice({
@@ -17,9 +19,9 @@ const experimentsSlice = createSlice({
       state.selectedItems = action.payload;
     },
     toggleSelectAll(state) {
-      for (let e in state.selectedItems) {
-        state.selectedItems[e] = !state.selectAll;
-      }
+      state.items.forEach(
+        (e) => (state.selectedItems[e.id] = !state.selectAll)
+      );
       state.selectAll = !state.selectAll;
     },
     addSelectedItem(state, action) {
