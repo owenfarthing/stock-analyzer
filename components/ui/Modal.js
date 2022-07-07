@@ -6,12 +6,15 @@ const Modal = (props) => {
   const dispatch = useDispatch();
 
   const toggleModalHandler = () => {
-    dispatch(props.toggleModalHandler());
+    const handlers = Array.isArray(props.toggleModalHandlers)
+      ? props.toggleModalHandlers
+      : [props.toggleModalHandlers];
+    handlers.forEach((action) => dispatch(action()));
   };
 
   return (
     <div className={styles.backdrop}>
-      <div className={`card ${styles.modal}`}>
+      <div className={`card ${styles.modal}`} style={props.styles}>
         <div className={styles["close-div"]}>
           <button
             type="button"

@@ -1,0 +1,13 @@
+.container1 {
+  height: 70px;
+}
+
+.container2 {
+  display: flex;
+  justify-content: space-between;
+  height: 50px;
+}
+
+.container3 {
+  display: inline-flex;
+}

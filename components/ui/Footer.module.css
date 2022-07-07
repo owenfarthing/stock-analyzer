@@ -1,0 +1,16 @@
+.container1 {
+  width: 100%;
+  display: inline-flex;
+  position: fixed;
+  bottom: 0px;
+  border: 1px solid gray;
+  z-index: 20;
+}
+
+.container2 {
+  position: relative;
+  top: 15px;
+  height: 20px;
+  left: 50%;
+  z-index: 20;
+}

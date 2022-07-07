@@ -108,7 +108,7 @@ const Authenticate = () => {
     : "Please sign in with your username and password.";
 
   return (
-    <Modal toggleModalHandler={roleActions.toggleAuth}>
+    <Modal toggleModalHandlers={roleActions.toggleAuth}>
       <div className={styles.container}>
         <h1 className={styles.header}>{isSigningUp ? "Sign Up" : "Sign In"}</h1>
         <div className={styles.description}>{description}</div>
