@@ -1,32 +1,29 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import useSizes from "../../util/use-sizes";
-import ExperimentItem from "./ExperimentItem";
 import styles from "./Experiments.module.css";
 import ExperimentsNav from "./ExperimentsNav";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { experimentsActions } from "../../../store/experiments-slice";
+import Pagination from "../../ui/Pagination";
+import ExperimentsTable from "./ExperimentsTable";
 
 const Experiments = () => {
-  const sizeUtils = useSizes();
-  const items = useSelector((state) => state.experiments.items);
+  const pages = useSelector((state) => state.experiments.pages);
+  const currentPage = useSelector((state) => state.experiments.currentPage);
+  const dispatch = useDispatch();
+
+  const setCurrentPage = (page) => {
+    dispatch(experimentsActions.setCurrentPage(page));
+  };
 
   return (
     <div className={styles.container}>
       <ExperimentsNav />
-      {items.length > 0 ? (
-        <ul
-          className={`list-group ${styles.list}`}
-          style={{ minWidth: sizeUtils.calculateBodyWidth() }}
-        >
-          {items.map((e) => (
-            <ExperimentItem data={e} />
-          ))}
-        </ul>
-      ) : (
-        <p style={{ textAlign: "center" }}>
-          No experiments found.{" "}
-          <a href="/home/lab">Time to start your first project!</a>
-        </p>
-      )}
+      <ExperimentsTable />
+      <Pagination
+        pages={pages}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 };

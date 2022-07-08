@@ -18,9 +18,9 @@ const Synopsis = () => {
     <>
       {currentItem && (
         <div className={styles.container}>
-          <h3
-            className={styles.header}
-          >{`Viewing Experiment "${currentItem.name}" (${currentItem.date})`}</h3>
+          <h3 className={styles.header}>{`Viewing Experiment "${
+            currentItem.name
+          }" (${new Date(currentItem.date).toLocaleDateString()})`}</h3>
           <div className={styles.row} style={{ top: "15%" }}>
             <div className={styles.cell}>
               <h4

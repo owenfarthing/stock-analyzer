@@ -1,26 +1,15 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState } from "react";
 import styles from "./ExperimentItem.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { experimentsActions } from "../../../store/experiments-slice";
 
 const ExperimentItem = (props) => {
   const dispatch = useDispatch();
-  const [optionsShowing, setOptionsShowing] = useState(false);
   const selectedItems = useSelector((state) => state.experiments.selectedItems);
-
-  const toggleOptions = () => {
-    setOptionsShowing((prev) => !prev);
-  };
 
   const viewItem = () => {
     dispatch(experimentsActions.setCurrentItem(props.data));
     dispatch(experimentsActions.toggleSynopsis());
-  };
-
-  const deleteItem = () => {
-    dispatch(experimentsActions.setCurrentItem(props.data));
-    dispatch(experimentsActions.toggleDeleteModal());
   };
 
   const toggleSelectItem = (event) => {
@@ -45,36 +34,14 @@ const ExperimentItem = (props) => {
           </div>
           <div style={{ paddingLeft: "10px" }}>
             {props.data.name}
-            <div>{props.data.date}</div>
+            <div>{new Date(props.data.date).toLocaleDateString()}</div>
           </div>
         </div>
-        {optionsShowing && (
-          <div style={{ paddingTop: 5 }}>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={viewItem}
-            >
-              View
-            </button>
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={deleteItem}
-              style={{ marginLeft: "10px" }}
-            >
-              Delete
-            </button>
-            <button type="button" className="btn" onClick={toggleOptions}>
-              <i className="bi-three-dots-vertical" />
-            </button>
-          </div>
-        )}
-        {!optionsShowing && (
-          <button type="button" className="btn" onClick={toggleOptions}>
+        <div style={{ paddingTop: 5 }}>
+          <button type="button" className="btn" onClick={viewItem}>
             <i className="bi-three-dots" />
           </button>
-        )}
+        </div>
       </div>
     </li>
   );

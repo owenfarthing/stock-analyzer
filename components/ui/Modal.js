@@ -5,13 +5,6 @@ import styles from "./Modal.module.css";
 const Modal = (props) => {
   const dispatch = useDispatch();
 
-  const toggleModalHandler = () => {
-    const handlers = Array.isArray(props.toggleModalHandlers)
-      ? props.toggleModalHandlers
-      : [props.toggleModalHandlers];
-    handlers.forEach((action) => dispatch(action()));
-  };
-
   return (
     <div className={styles.backdrop}>
       <div className={`card ${styles.modal}`} style={props.styles}>
@@ -20,7 +13,7 @@ const Modal = (props) => {
             type="button"
             className={`btn btn-close ${styles.close}`}
             aria-label="Close"
-            onClick={toggleModalHandler}
+            onClick={props.toggleModalHandler}
           />
         </div>
         {props.children}
