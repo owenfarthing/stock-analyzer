@@ -20,10 +20,15 @@ const ExperimentsTable = () => {
   useEffect(() => {
     dispatch(
       experimentsActions.setPages(
-        Math.ceil(items.length / MAX_ENTRIES_PER_PAGE)
+        items.length === 0 ? 1 : Math.ceil(items.length / MAX_ENTRIES_PER_PAGE)
       )
     );
   }, [items]);
+
+  useEffect(() => {
+    if (currentPage >= pages)
+      dispatch(experimentsActions.setCurrentPage(pages - 1));
+  }, [currentPage, pages]);
 
   useEffect(() => {
     if (sortDesc) dispatch(experimentsActions.sortItemsDesc());

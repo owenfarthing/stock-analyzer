@@ -23,7 +23,7 @@ const SideNav = () => {
         </li>
         <li className="nav-item">
           <a href="/home/experiments" className="nav-link">
-            <i className="bi-clock-experiments"></i>
+            <i className="bi-clock-history"></i>
             <span className={styles.label}>Experiments</span>
           </a>
         </li>

@@ -11,7 +11,7 @@ const Synopsis = () => {
   };
 
   const viewInLab = () => {
-    router.push("/home/lab");
+    router.push(`/home/lab/${currentItem.id}`);
   };
 
   return (
