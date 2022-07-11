@@ -1,0 +1,24 @@
+tabs:
+- home
+- profile
+- manage
+- sign in / sign out
+
+pages:
+- dashboard
+- lab
+    - results
+- experiments
+- data / my data
+- settings
+
+-----------------------
+
+Experiments:
+- side nav
+- list of data runs
+    - left aligned name (optional; default is untitled)
+    - right aligned date (MM/DD/YY)
+- on-click synpopsis pop-up
+    - summary data
+    - option to "view in results" -> /home/lab/results

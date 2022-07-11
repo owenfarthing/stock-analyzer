@@ -1,22 +1,16 @@
 import styles from "./MainNav.module.css";
-import homeSlice from "../../store/home-slice";
-import profileSlice from "../../store/profile-slice";
-import settingsSlice from "../../store/settings-slice";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { roleActions } from "../../store/role-slice";
 import useAuth from "../util/use-auth";
+import useSizes from "../util/use-sizes";
 
-const sizes = {
-  logoWidth: 200,
-  navHeight: 50,
-  tabWidth: 100,
-};
-
-const MainNav = (props) => {
+const MainNav = () => {
   const [tabSelected, setTabSelected] = useState("home");
   const auth = useAuth();
   const role = auth.getRole();
+  const sizeUtils = useSizes();
+  const { logoWidth, navHeight, tabWidth } = sizeUtils.sizes;
   const dispatch = useDispatch();
 
   const onSelectTab = (tab) => {
@@ -37,28 +31,20 @@ const MainNav = (props) => {
     dispatch(roleActions.toggleAuth());
   };
 
-  const countTabsShowing = () => {
-    let numTabs = 2;
-    if (role === "user") numTabs++;
-    if (role === "admin") numTabs += 2;
-
-    return numTabs;
-  };
-
   return (
     <div
       id="header"
       className={styles["nav-container"]}
       style={{
-        minWidth: `${sizes.logoWidth + countTabsShowing() * sizes.tabWidth}px`,
+        minWidth: `${logoWidth + sizeUtils.calculateBodyWidth()}px`,
       }}
     >
       <div
         className={styles.logo}
         style={{
-          width: `${sizes.logoWidth}px`,
-          height: `${sizes.navHeight}px`,
-          lineHeight: `${sizes.navHeight}px`,
+          width: `${logoWidth}px`,
+          height: `${navHeight}px`,
+          lineHeight: `${navHeight}px`,
         }}
       >
         Logo Placeholder
@@ -67,10 +53,10 @@ const MainNav = (props) => {
         id="header-nav"
         className={`nav nav-tabs justify-content-end ${styles["header-nav"]}`}
         style={{
-          height: `${sizes.navHeight}px`,
+          height: `${navHeight}px`,
         }}
       >
-        <li className="nav-item" style={{ width: `${sizes.tabWidth}px` }}>
+        <li className="nav-item" style={{ width: `${tabWidth}px` }}>
           <a
             className={`nav-link ${tabSelected === "home" && "active"} ${
               styles["tab-text"]
@@ -82,7 +68,7 @@ const MainNav = (props) => {
           </a>
         </li>
         {(role === "user" || role === "admin") && (
-          <li className="nav-item" style={{ width: `${sizes.tabWidth}px` }}>
+          <li className="nav-item" style={{ width: `${tabWidth}px` }}>
             <a
               className={`nav-link ${tabSelected === "profile" && "active"} ${
                 styles["tab-text"]
@@ -95,19 +81,19 @@ const MainNav = (props) => {
           </li>
         )}
         {role === "admin" && (
-          <li className="nav-item" style={{ width: `${sizes.tabWidth}px` }}>
+          <li className="nav-item" style={{ width: `${tabWidth}px` }}>
             <a
-              className={`nav-link ${tabSelected === "settings" && "active"} ${
+              className={`nav-link ${tabSelected === "manage" && "active"} ${
                 styles["tab-text"]
               }`}
               aria-current="page"
-              onClick={onSelectTab.bind(null, "settings")}
+              onClick={onSelectTab.bind(null, "manage")}
             >
-              Settings
+              Manage
             </a>
           </li>
         )}
-        <li className="nav-item" style={{ width: `${sizes.tabWidth}px` }}>
+        <li className="nav-item" style={{ width: `${tabWidth}px` }}>
           <a
             className={`nav-link border-0 ${styles["tab-text"]}`}
             aria-current="page"
