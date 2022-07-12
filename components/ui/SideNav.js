@@ -28,10 +28,10 @@ const SideNav = () => {
           </a>
         </li>
         <li className="nav-item">
-          <a href="/home/data" className="nav-link">
+          <a href="/home/datasets" className="nav-link">
             <i className="bi-activity"></i>
             <span className={styles.label}>
-              {role === "admin" ? "Data" : "My Data"}
+              {role === "admin" ? "Datasets" : "My Datasets"}
             </span>
           </a>
         </li>

@@ -18,24 +18,29 @@ const Synopsis = () => {
     <>
       {currentItem && (
         <div className={styles.container}>
-          <h3 className={styles.header}>{`Viewing Experiment "${
-            currentItem.name
-          }" (${new Date(currentItem.date).toLocaleDateString()})`}</h3>
+          <div className={styles.header}>
+            <h4>{`Viewing Experiment "${currentItem.name}"`}</h4>
+            <p>{`Created ${new Date(
+              currentItem.date
+            ).toLocaleDateString()}`}</p>
+          </div>
           <div className={styles.row} style={{ top: "15%" }}>
             <div className={styles.cell}>
-              <h4
-                className={styles.text}
-              >{`"${currentItem.dataset.filename}"`}</h4>
+              <h4 className={styles.text}>
+                {`"${currentItem.dataset.filename}"` || "-"}
+              </h4>
               <div className={styles.text}>Dataset</div>
             </div>
             <div className={styles.cell}>
               <h4 className={styles.text}>
-                {currentItem.dataset.recordCount.toLocaleString()}
+                {currentItem.dataset.recordCount.toLocaleString() || "-"}
               </h4>
               <div className={styles.text}>Records</div>
             </div>
             <div className={styles.cell}>
-              <h4 className={styles.text}>{currentItem.dataset.span}</h4>
+              <h4 className={styles.text}>
+                {currentItem.dataset.span.toString() || "-"}
+              </h4>
               <div className={styles.text}>Years</div>
             </div>
             <div className={styles.cell}>
@@ -47,19 +52,27 @@ const Synopsis = () => {
           </div>
           <div className={styles.row} style={{ top: "20%" }}>
             <div className={styles.cell}>
-              <h4 className={styles.text}>{currentItem.params.iterations}</h4>
+              <h4 className={styles.text}>
+                {currentItem.params.iterations.toString() || "-"}
+              </h4>
               <div className={styles.text}>Iterations</div>
             </div>
             <div className={styles.cell}>
-              <h4 className={styles.text}>{currentItem.params.patience}</h4>
+              <h4 className={styles.text}>
+                {currentItem.params.patience.toString() || "-"}
+              </h4>
               <div className={styles.text}>Patience</div>
             </div>
             <div className={styles.cell}>
-              <h4 className={styles.text}>{currentItem.results.rmse}</h4>
+              <h4 className={styles.text}>
+                {currentItem.results.rmse.toString() || "-"}
+              </h4>
               <div className={styles.text}>RMSE</div>
             </div>
             <div className={styles.cell}>
-              <h4 className={styles.text}>{currentItem.results.duration}</h4>
+              <h4 className={styles.text}>
+                {currentItem.results.duration.toString() || "-"}
+              </h4>
               <div className={styles.text}>Duration</div>
             </div>
           </div>

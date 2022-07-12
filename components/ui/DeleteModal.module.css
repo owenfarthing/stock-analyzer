@@ -1,0 +1,22 @@
+.container {
+  width: 80%;
+  left: 10%;
+  position: relative;
+  padding: 20px;
+}
+
+.header {
+  width: 100%;
+  text-align: center;
+}
+
+.desc {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.button {
+  position: relative;
+  width: 100px;
+  left: calc(50% - 50px);
+}

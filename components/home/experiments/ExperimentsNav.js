@@ -5,6 +5,7 @@ import { experimentsActions } from "../../../store/experiments-slice";
 import Modal from "../../ui/Modal";
 import Synopsis from "./Synopsis";
 import { useState } from "react";
+import DeleteModal from "../../ui/DeleteModal";
 
 const ExperimentsNav = () => {
   const dispatch = useDispatch();
@@ -64,39 +65,15 @@ const ExperimentsNav = () => {
         </Modal>
       )}
       {deleteModalShowing && (
-        <Modal
-          styles={{
-            top: "25%",
-            width: "50%",
-            left: "25%",
-            height: "25%",
-            minHeight: "200px",
-            minWidth: "500px",
-          }}
+        <DeleteModal
           toggleModalHandler={() => {
             setSingleSelected("");
             dispatch(experimentsActions.toggleDeleteModal());
             dispatch(experimentsActions.setCurrentItem(null));
           }}
-        >
-          <div className={styles["delete-modal-container"]}>
-            <h4 className={styles["delete-modal-header"]}>
-              {singleSelected
-                ? `Delete "${singleSelected}"?`
-                : "Delete selected items?"}
-            </h4>
-            <p className={styles["delete-modal-desc"]}>
-              This action cannot be undone.
-            </p>
-            <button
-              type="button"
-              className={`btn btn-danger ${styles["delete-modal-button"]}`}
-              onClick={deleteItems}
-            >
-              Delete
-            </button>
-          </div>
-        </Modal>
+          deleteItemsHandler={deleteItems}
+          singleSelected={singleSelected}
+        />
       )}
       <div>
         <div className={styles.container}>

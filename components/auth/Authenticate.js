@@ -4,9 +4,11 @@ import useInput from "../util/use-input";
 import styles from "./Authenticate.module.css";
 import Input from "../ui/Input";
 import { roleActions } from "../../store/role-slice";
+import { useDispatch } from "react-redux";
 
 const Authenticate = () => {
   const [isSigningUp, setIsSigningUp] = useState(false);
+  const dispatch = useDispatch();
 
   const toggleSignUpHandler = () => {
     setIsSigningUp(true);
@@ -108,7 +110,12 @@ const Authenticate = () => {
     : "Please sign in with your username and password.";
 
   return (
-    <Modal toggleModalHandlers={roleActions.toggleAuth}>
+    <Modal
+      toggleModalHandler={() => {
+        dispatch(roleActions.toggleAuth());
+        toggleSignUpHandler();
+      }}
+    >
       <div className={styles.container}>
         <h1 className={styles.header}>{isSigningUp ? "Sign Up" : "Sign In"}</h1>
         <div className={styles.description}>{description}</div>

@@ -24,6 +24,7 @@ const useInput = (validationHandler) => {
 
   return {
     input,
+    touched: inputTouched,
     msg,
     isValid,
     onInputBlur: onInputBlurHandler,

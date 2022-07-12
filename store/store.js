@@ -4,6 +4,8 @@ import profileSlice from "./profile-slice";
 import manageSlice from "./manage-slice";
 import roleSlice from "./role-slice";
 import experimentsSlice from "./experiments-slice";
+import labSlice from "./lab-slice";
+import datasetsSlice from "./datasets-slice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +14,8 @@ const store = configureStore({
     manage: manageSlice.reducer,
     role: roleSlice.reducer,
     experiments: experimentsSlice.reducer,
+    lab: labSlice.reducer,
+    datasets: datasetsSlice.reducer,
   },
 });
 

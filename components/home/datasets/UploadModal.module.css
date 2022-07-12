@@ -1,0 +1,42 @@
+.container {
+  width: 100%;
+  position: relative;
+}
+
+.header {
+  text-align: center;
+}
+
+.info {
+  width: 50%;
+  left: 25%;
+  top: 10%;
+  position: relative;
+}
+
+.icon {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.form {
+  width: 50%;
+  left: 25%;
+  top: 15%;
+  position: relative;
+}
+
+.input {
+  position: relative;
+  top: 20%;
+  width: 400px;
+  left: calc(50% - 200px);
+}
+
+.button {
+  position: relative;
+  top: 20%;
+  width: 100px;
+  left: calc(50% - 50px);
+}

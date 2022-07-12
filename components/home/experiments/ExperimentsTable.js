@@ -51,7 +51,7 @@ const ExperimentsTable = () => {
           style={{ minWidth: sizeUtils.calculateBodyWidth() }}
         >
           {items.slice(pageStart(), pageEnd()).map((e) => (
-            <ExperimentItem data={e} />
+            <ExperimentItem data={e} key={e.id} />
           ))}
         </ul>
       ) : (

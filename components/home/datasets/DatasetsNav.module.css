@@ -1,0 +1,15 @@
+.container {
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+
+.button {
+  height: 40px;
+  line-height: 20px;
+  color: black;
+  border: none;
+}

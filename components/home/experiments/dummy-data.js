@@ -9,6 +9,7 @@ export const dummyData = [
       filename: "mydata.xlsx",
       recordCount: 150000,
       span: 3,
+      extraParams: {},
     },
     params: {
       split: 60,
@@ -30,6 +31,7 @@ export const dummyData = [
       filename: "Dataset1.xlsx",
       recordCount: 120000,
       span: 4,
+      extraParams: {},
     },
     params: {
       split: 80,
@@ -51,6 +53,7 @@ export const dummyData = [
       filename: "Dataset1.xlsx",
       recordCount: 120000,
       span: 4,
+      extraParams: {},
     },
     params: {
       split: 80,
@@ -72,6 +75,7 @@ export const dummyData = [
       filename: "Dataset1.xlsx",
       recordCount: 120000,
       span: 4,
+      extraParams: {},
     },
     params: {
       split: 80,
@@ -93,6 +97,7 @@ export const dummyData = [
       filename: "Dataset1.xlsx",
       recordCount: 120000,
       span: 4,
+      extraParams: {},
     },
     params: {
       split: 80,
@@ -114,6 +119,7 @@ export const dummyData = [
       filename: "Dataset1.xlsx",
       recordCount: 120000,
       span: 4,
+      extraParams: {},
     },
     params: {
       split: 80,
@@ -135,6 +141,7 @@ export const dummyData = [
       filename: "Dataset1.xlsx",
       recordCount: 120000,
       span: 4,
+      extraParams: {},
     },
     params: {
       split: 80,
@@ -156,6 +163,7 @@ export const dummyData = [
       filename: "Dataset1.xlsx",
       recordCount: 120000,
       span: 4,
+      extraParams: {},
     },
     params: {
       split: 80,
@@ -177,6 +185,7 @@ export const dummyData = [
       filename: "Dataset1.xlsx",
       recordCount: 120000,
       span: 4,
+      extraParams: {},
     },
     params: {
       split: 80,
@@ -198,6 +207,7 @@ export const dummyData = [
       filename: "Dataset1.xlsx",
       recordCount: 120000,
       span: 4,
+      extraParams: {},
     },
     params: {
       split: 80,
