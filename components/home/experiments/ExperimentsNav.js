@@ -55,7 +55,7 @@ const ExperimentsNav = () => {
     <>
       {synopsisShowing && (
         <Modal
-          styles={{ minWidth: "800px" }}
+          styles={{ minWidth: "800px", height: "50%" }}
           toggleModalHandler={() => {
             dispatch(experimentsActions.toggleSynopsis());
             dispatch(experimentsActions.setCurrentItem(null));

@@ -77,7 +77,7 @@ const DatasetsNav = () => {
       {uploadModalShowing && <UploadModal />}
       {synopsisShowing && (
         <Modal
-          styles={{ minWidth: "800px", minHeight: "600px" }}
+          styles={{ minWidth: "800px", height: "50%", minHeight: "500px" }}
           toggleModalHandler={() => {
             dispatch(datasetsActions.toggleSynopsis());
             dispatch(datasetsActions.setCurrentItem(null));
@@ -142,8 +142,6 @@ const DatasetsNav = () => {
                 type="search"
                 className="form-control rounded"
                 placeholder="Search"
-                aria-label="Search"
-                aria-describedby="search-addon"
                 value={search}
                 onChange={updateSearch}
               />

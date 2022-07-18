@@ -10,6 +10,7 @@ const Input = (props) => {
           className={`form-control ${!props.input.isValid && styles.invalid}`}
           onBlur={props.input.onInputBlur}
           onChange={props.input.onInputChange}
+          placeholder={props.placeholder}
         />
         {!props.input.isValid && (
           <p className={styles["invalid-msg"]}>{props.input.msg}</p>
