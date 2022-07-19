@@ -48,7 +48,10 @@
 }
 
 .selector {
-  width: 100%;
+  width: fit-content;
+  height: fit-content;
+  padding: 0px;
+  margin: 0px;
 }
 
 .inputs {

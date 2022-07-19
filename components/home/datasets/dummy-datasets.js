@@ -2,6 +2,7 @@ export const dummyDatasets = [
   {
     fileId: "1234",
     filename: "Data.xlsx",
+    fileSize: 1024,
     date: "2021-03-04",
     recordCount: 0,
     span: 0,
@@ -12,6 +13,7 @@ export const dummyDatasets = [
   {
     fileId: "1235",
     filename: "my_stuff.txt",
+    fileSize: 1024,
     date: "2021-03-05",
     recordCount: 0,
     span: 0,
@@ -22,6 +24,7 @@ export const dummyDatasets = [
   {
     fileId: "1236",
     filename: "Untitled 1",
+    fileSize: 1024,
     date: "2021-03-02",
     recordCount: 0,
     span: 0,

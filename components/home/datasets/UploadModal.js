@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./UploadModal.module.css";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { datasetsActions } from "../../../store/datasets-slice";
 import useInput from "../../util/use-input";
 import Modal from "../../ui/Modal";
@@ -15,6 +15,7 @@ const MAX_FILE_SIZE = 50;
 const ACCEPTED_FILE_TYPES = ["csv", "xlsx"];
 const MAX_COLUMNS_SHOWN = 10;
 const MAX_ROWS_SHOWN = 100;
+const MAX_COLUMN_OFFSET = 10;
 
 const onFileLoad = (rawFileContents) => {
   return rawFileContents.split("\n").map((row) => row.split(","));
@@ -24,13 +25,13 @@ const UploadModal = () => {
   const dispatch = useDispatch();
   const fileReader = useReader(onFileLoad);
   const fileProcessor = useProcess();
+  const items = useSelector((state) => state.datasets.items);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isFileSelected, setIsFileSelected] = useState(false);
   const [invalidFileMsg, setInvalidFileMsg] = useState("");
   const [uploadDisabled, setUploadDisabled] = useState(true);
   const [confirmDisabled, setConfirmDisabled] = useState(true);
   const [choosingFile, setChoosingFile] = useState(true);
-  const [invalidParamsMsg, setInvalidParamsMsg] = useState("");
   const [xAxis, setXAxis] = useState("");
   const [yAxis, setYAxis] = useState("");
 
@@ -40,7 +41,7 @@ const UploadModal = () => {
     if (inputStripped === NaN) return { valid: false, msg: "" };
 
     if (fileReader?.fileContents) {
-      if (inputStripped < 0 || inputStripped >= fileReader.fileContents.length)
+      if (inputStripped < 0 || inputStripped > MAX_COLUMN_OFFSET)
         return {
           valid: false,
           msg: "",
@@ -53,17 +54,14 @@ const UploadModal = () => {
   const offsetInput = useInput(numberValidator);
 
   useEffect(() => {
-    if (Number(offsetInput.input) > fileReader?.fileContents?.length)
-      setInvalidParamsMsg(
-        `The max number of selectable records is ${fileReader?.fileContents?.length}. Please adjust your offset.`
-      );
-    else {
-      setInvalidParamsMsg("");
+    if (offsetInput.isValid && offsetInput.touched && selectedFile)
+      setUploadDisabled(false);
+    else setUploadDisabled(true);
+  }, [offsetInput.isValid, offsetInput.touched, selectedFile]);
 
-      if (offsetInput.isValid && xAxis !== "" && yAxis !== "")
-        setConfirmDisabled(false);
-    }
-  }, [offsetInput.input, fileReader.fileContents, xAxis, yAxis]);
+  useEffect(() => {
+    if (xAxis !== "" && yAxis !== "") setConfirmDisabled(false);
+  }, [xAxis, yAxis]);
 
   const onSelectHandler = (event) => {
     if (!event.target.files[0]) {
@@ -90,17 +88,20 @@ const UploadModal = () => {
       return;
     }
 
-    setUploadDisabled(false);
+    if (
+      items.filter((e) => e.filename === file.name && e.fileSize === file.size)
+        .length > 0
+    ) {
+      setInvalidFileMsg("File already exists.");
+      return;
+    }
+
     setInvalidFileMsg("");
     setSelectedFile(event.target.files[0]);
   };
 
   const getColumnNames = () => {
     return fileReader.fileContents?.[0]?.slice(0, MAX_COLUMNS_SHOWN) || [];
-  };
-
-  const getRows = () => {
-    return fileReader.fileContents?.slice(0, MAX_ROWS_SHOWN) || [];
   };
 
   const onSelectXHandler = (col) => {
@@ -114,13 +115,30 @@ const UploadModal = () => {
   const onUploadHandler = () => {
     setChoosingFile(false);
     setUploadDisabled(true);
-    fileReader.readFile(selectedFile);
+
+    fileReader.readFile(selectedFile, Number(offsetInput.input) || 0);
   };
 
-  const onFileProcessed = (data) => {
+  const onFileProcessed = (data, span, records) => {
     // Upload file to S3
     // Post file metadata to database
-    console.log(data);
+    if (fileProcessor.error) return;
+
+    dispatch(
+      datasetsActions.addItem({
+        fileId: (Math.random() * 10 ** 4).toString(),
+        filename: selectedFile.name,
+        fileSize: selectedFile.size,
+        date: new Date().toString(),
+        recordCount: records,
+        span: `${span.years} yrs, ${span.months} mos`,
+        offset: Number(offsetInput.input) || 0,
+        dataColumn: yAxis,
+        timeColumn: xAxis,
+      })
+    );
+
+    dispatch(datasetsActions.toggleUploadModal());
   };
 
   const onConfirmHandler = () => {
@@ -129,9 +147,12 @@ const UploadModal = () => {
       fileReader.fileContents,
       xAxis,
       yAxis,
-      offsetInput.input || 0,
       onFileProcessed
     );
+  };
+
+  const onCancelHandler = () => {
+    dispatch(datasetsActions.toggleUploadModal());
   };
 
   const sizeCalculator = (sizeInBytes) => {
@@ -196,21 +217,30 @@ const UploadModal = () => {
                 onSelectHandler={onSelectYHandler}
               />
             </div>
-            <div className={styles.inputs}>
-              <Input
-                placeholder="Offset"
-                type="number"
-                input={offsetInput}
-                containerStyles={{ width: "120px" }}
-              />
-            </div>
           </div>
-          {invalidParamsMsg && (
-            <p className={styles.invalid}>{invalidParamsMsg}</p>
-          )}
         </>
       )
     );
+  };
+
+  const showFileProcessingError = () => {
+    return (
+      <div
+        className={styles.file}
+        style={{ textAlign: "center", color: "red", fontStyle: "italic" }}
+      >
+        <p>{fileProcessor.error}</p>
+      </div>
+    );
+  };
+
+  const displayTitle = () => {
+    if (!fileReader.uploadMsg) return <>Upload a dataset...</>;
+
+    if (fileReader.uploadMsg && !fileProcessor.processMsg)
+      return <>{fileReader.uploadMsg}</>;
+
+    if (fileProcessor.processMsg) return <>{fileProcessor.processMsg}</>;
   };
 
   const displayStatusWindow = () => {
@@ -222,6 +252,8 @@ const UploadModal = () => {
     if (isFileSelected && invalidFileMsg) return showFileUploadError();
 
     if (fileReader.uploadStatus === "loading") return showProgressBar();
+
+    if (fileProcessor.error) return showFileProcessingError();
 
     if (fileReader.uploadStatus === "loaded") return showColumnSelect();
   };
@@ -236,28 +268,41 @@ const UploadModal = () => {
       }}
     >
       <div className={styles.container}>
-        <h4 className={styles.header}>
-          {fileReader.uploadMsg || "Upload a dataset..."}
-        </h4>
+        <h4 className={styles.header}>{displayTitle()}</h4>
         <div
           className={`${fileReader.uploadStatus === "" && "card"} ${
             styles.info
           }`}
         >
           {displayStatusWindow()}
+          {choosingFile && (
+            <div className="form-group">
+              <Input
+                placeholder="Offset"
+                type="number"
+                input={offsetInput}
+                inputStyles={{
+                  height: "100px",
+                }}
+                containerStyles={{
+                  width: "100px",
+                  paddingTop: "0px",
+                  paddingLeft: "5px",
+                }}
+              />
+              <div>
+                <input
+                  type="file"
+                  className={`form-control ${styles.selector}}`}
+                  onChange={onSelectHandler}
+                />
+              </div>
+            </div>
+          )}
         </div>
-        {choosingFile && (
-          <form className={styles.form}>
-            <input
-              type="file"
-              className={styles.selector}
-              onChange={onSelectHandler}
-            />
-          </form>
-        )}
         {fileReader.uploadStatus !== "loaded" && (
           <button
-            type="submit"
+            type="button"
             className={`btn btn-primary ${uploadDisabled && "disabled"} ${
               styles.button
             }`}
@@ -266,15 +311,24 @@ const UploadModal = () => {
             Upload
           </button>
         )}
-        {fileReader.uploadStatus === "loaded" && (
+        {fileReader.uploadStatus === "loaded" && !fileProcessor.error && (
           <button
-            type="submit"
+            type="button"
             className={`btn btn-primary ${confirmDisabled && "disabled"} ${
               styles.button
             }`}
             onClick={onConfirmHandler}
           >
             Confirm
+          </button>
+        )}
+        {fileProcessor.error && (
+          <button
+            type="button"
+            className={`btn btn-secondary ${styles.button}`}
+            onClick={onCancelHandler}
+          >
+            Cancel
           </button>
         )}
       </div>

@@ -31,11 +31,15 @@ const Synopsis = () => {
               <div className={styles.text}>Years</div>
             </div>
             <div className={styles.cell}>
-              <h4 className={styles.text}>{currentItem.timeColumn || "-"}</h4>
+              <h4 className={styles.text}>
+                {`"${currentItem.timeColumn}"` || "-"}
+              </h4>
               <div className={styles.text}>X-axis</div>
             </div>
             <div className={styles.cell}>
-              <h4 className={styles.text}>{currentItem.dataColumn || "-"}</h4>
+              <h4 className={styles.text}>
+                {`"${currentItem.dataColumn}"` || "-"}
+              </h4>
               <div className={styles.text}>Y-axis</div>
             </div>
           </div>
