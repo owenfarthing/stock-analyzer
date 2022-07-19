@@ -1,20 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { dummyData } from "../components/home/experiments/dummy-data";
+import { dummyDatasets } from "../components/home/datasets/dummy-datasets";
 
 const initialState = {
-  items: dummyData,
+  items: dummyDatasets,
+  displayedItems: [],
   selectedItems: {},
   selectAll: false,
   currentItem: null,
-  currentPage: 0,
-  pages: 1,
   sortDesc: true,
+  uploadModalShowing: false,
   synopsisShowing: false,
   deleteModalShowing: false,
 };
 
-const experimentsSlice = createSlice({
-  name: "experiments",
+const datasetsSlice = createSlice({
+  name: "datasets",
   initialState,
   reducers: {
     addItem(state, action) {
@@ -24,16 +24,19 @@ const experimentsSlice = createSlice({
       let search = Array.isArray(action.payload)
         ? action.payload
         : [action.payload];
-      state.items = state.items.filter((e) => !search.includes(e.id));
+      state.items = state.items.filter((e) => !search.includes(e.fileId));
 
       state.selectedItems = {};
+    },
+    setDisplayedItems(state, action) {
+      state.displayedItems = action.payload;
     },
     setSelectedItems(state, action) {
       state.selectedItems = action.payload;
     },
     toggleSelectAll(state) {
       state.items.forEach(
-        (e) => (state.selectedItems[e.id] = !state.selectAll)
+        (e) => (state.selectedItems[e.fileId] = !state.selectAll)
       );
       state.selectAll = !state.selectAll;
     },
@@ -46,12 +49,6 @@ const experimentsSlice = createSlice({
     setCurrentItem(state, action) {
       state.currentItem = action.payload;
     },
-    setCurrentPage(state, action) {
-      state.currentPage = action.payload;
-    },
-    setPages(state, action) {
-      state.pages = action.payload;
-    },
     toggleSortOrder(state) {
       state.sortDesc = !state.sortDesc;
     },
@@ -60,6 +57,9 @@ const experimentsSlice = createSlice({
     },
     sortItemsDesc(state) {
       state.items.sort((a, b) => new Date(b.date) - new Date(a.date));
+    },
+    toggleUploadModal(state) {
+      state.uploadModalShowing = !state.uploadModalShowing;
     },
     toggleSynopsis(state) {
       state.synopsisShowing = !state.synopsisShowing;
@@ -70,6 +70,6 @@ const experimentsSlice = createSlice({
   },
 });
 
-export default experimentsSlice;
+export default datasetsSlice;
 
-export const experimentsActions = experimentsSlice.actions;
+export const datasetsActions = datasetsSlice.actions;

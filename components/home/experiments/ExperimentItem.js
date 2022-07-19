@@ -20,7 +20,7 @@ const ExperimentItem = (props) => {
   };
 
   return (
-    <li className={`list-group-item ${styles.container1}`} id={props.data.id}>
+    <li className={`list-group-item ${styles.container1}`} key={props.data.id}>
       <div className={styles.container2}>
         <div className={styles.container3}>
           <div className="form-check">

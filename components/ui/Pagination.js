@@ -11,6 +11,7 @@ const Pagination = (props) => {
             props.currentPage === i - 1 && styles.current
           }`}
           onClick={props.setCurrentPage.bind(null, i - 1)}
+          key={i}
         >
           {i}
         </button>

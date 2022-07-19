@@ -1,10 +1,6 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
 import styles from "./Modal.module.css";
 
 const Modal = (props) => {
-  const dispatch = useDispatch();
-
   return (
     <div className={styles.backdrop}>
       <div className={`card ${styles.modal}`} style={props.styles}>

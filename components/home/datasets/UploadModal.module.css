@@ -1,0 +1,75 @@
+.container {
+  width: 100%;
+  position: relative;
+}
+
+.header {
+  text-align: center;
+}
+
+.info {
+  width: 70%;
+  left: 15%;
+  top: 5%;
+  position: relative;
+}
+
+.file {
+  width: 100%;
+  height: fit-content;
+  padding-top: 10px;
+  padding-left: 5px;
+  padding-bottom: 10px;
+  position: relative;
+}
+
+.progress {
+  height: 75px;
+  width: 90%;
+  left: 5%;
+  top: 5%;
+  position: relative;
+}
+
+.icon {
+  width: 100%;
+  font-size: 200px;
+  color: lightgray;
+  display: flex;
+  justify-content: center;
+}
+
+.form {
+  width: 70%;
+  left: 15%;
+  top: 10%;
+  padding-top: 20px;
+  position: relative;
+}
+
+.selector {
+  width: fit-content;
+  height: fit-content;
+  padding: 0px;
+  margin: 0px;
+}
+
+.inputs {
+  display: inline-flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.invalid {
+  color: #aa0b20;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.button {
+  position: relative;
+  top: 15%;
+  width: 100px;
+  margin: 20px 0px 20px;
+  left: calc(50% - 50px);
+}

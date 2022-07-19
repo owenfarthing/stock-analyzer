@@ -1,0 +1,12 @@
+.container {
+  width: 100%;
+  height: calc(100vh - 250px);
+  margin: 10px;
+}
+
+.buttons {
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  padding: 10px;
+}
