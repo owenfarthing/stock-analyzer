@@ -7,6 +7,10 @@ const useInput = (validationHandler) => {
   let { valid, msg } = validationHandler(input);
   let isValid = valid || !inputTouched;
 
+  const setInputValue = (val) => {
+    setInput(val);
+  };
+
   const onInputBlurHandler = () => {
     setInputTouched(true);
   };
@@ -15,21 +19,13 @@ const useInput = (validationHandler) => {
     setInput(event.target.value);
   };
 
-  const onFormSubmitHandler = () => {
-    if (!isValid) return;
-
-    setInputTouched(false);
-    setInput("");
-  };
-
   return {
     input,
-    touched: inputTouched,
     msg,
     isValid,
+    setInputValue,
     onInputBlur: onInputBlurHandler,
     onInputChange: onInputChangeHandler,
-    onFormSubmit: onFormSubmitHandler,
   };
 };
 

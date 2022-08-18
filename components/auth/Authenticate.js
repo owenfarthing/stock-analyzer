@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../ui/Modal";
 import useInput from "../util/use-input";
 import styles from "./Authenticate.module.css";
@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 
 const Authenticate = () => {
   const [isSigningUp, setIsSigningUp] = useState(false);
+  const [enabled, setEnabled] = useState(true);
   const dispatch = useDispatch();
 
   const toggleSignUpHandler = () => {
@@ -99,10 +100,28 @@ const Authenticate = () => {
   const confirmPassInput = useInput(confirmPassValidator);
   // End validators
 
+  useEffect(() => {
+    setEnabled(
+      emailInput.isValid &&
+        passInput.isValid &&
+        (!isSigningUp || confirmPassInput.isValid)
+    );
+  }, [
+    emailInput.isValid,
+    passInput.isValid,
+    confirmPassInput.isValid,
+    isSigningUp,
+  ]);
+
   const onAuthHandler = () => {
-    emailInput.onFormSubmit();
-    passInput.onFormSubmit();
-    isSigningUp && confirmPassInput.onFormSubmit();
+    if (
+      !emailInput.isValid ||
+      !passInput.isValid ||
+      (isSigningUp && !confirmPassInput.isValid)
+    ) {
+      setEnabled(false);
+      return;
+    }
   };
 
   const description = isSigningUp
@@ -142,7 +161,10 @@ const Authenticate = () => {
             </div>
           )}
           <div className={styles.button}>
-            <button type="submit" className="btn btn-primary">
+            <button
+              type="submit"
+              className={`btn btn-primary ${!enabled && "disabled"}`}
+            >
               {isSigningUp ? "Sign Up" : "Sign In"}
             </button>
           </div>

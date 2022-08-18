@@ -5,7 +5,7 @@ import CreateModal from "../../../components/ui/CreateModal";
 import useInput from "../../../components/util/use-input";
 import Input from "../../../components/ui/Input";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { labActions } from "../../../store/lab-slice";
 import { useRouter } from "next/router";
 
@@ -44,19 +44,31 @@ const CreateExperimentPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [canContinue, setCanContinue] = useState(false);
-
+  const currentData = useSelector((state) => state.lab.currentData);
   const nameInput = useInput(nameValidator);
 
   useEffect(() => {
-    setCanContinue(nameInput.isValid && nameInput.touched);
+    setCanContinue(nameInput.isValid);
   }, [nameInput.isValid, nameInput.touched]);
+
+  useEffect(() => {
+    nameInput.setInputValue(currentData.name || "");
+  }, []);
 
   const onCancel = () => {
     dispatch(labActions.toggleCancelModal());
   };
 
   const onNext = () => {
+    if (!nameInput.isValid) {
+      setCanContinue(false);
+      return;
+    }
+
     dispatch(labActions.moveCurrentStage(1));
+    dispatch(
+      labActions.setMetadata({ uid: "fake_uid", name: nameInput.input })
+    );
     router.push(`choose-data?expname=${nameInput.input}`);
   };
 
@@ -92,9 +104,10 @@ const CreateExperimentPage = () => {
                 width: "100%",
                 display: "flex",
                 justifyContent: "center",
+                paddingTop: "0px",
               }}
               inputStyles={{ width: "500px" }}
-              label={"Name:"}
+              placeholder={"Name"}
               type={"text"}
               input={nameInput}
             />

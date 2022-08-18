@@ -1,8 +1,7 @@
-import { useSelector } from "react-redux";
 import styles from "./Synopsis.module.css";
 
-const Synopsis = () => {
-  const currentItem = useSelector((state) => state.datasets.currentItem);
+const Synopsis = (props) => {
+  const { currentItem } = props;
 
   return (
     <>

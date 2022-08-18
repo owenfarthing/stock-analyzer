@@ -1,29 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const stages = ["name", "data", "network", "loading", "results"];
+const stages = ["name", "data", "network", "summary", "loading", "results"];
 
 const prototype = {
   id: "",
   uid: "",
   name: "",
   date: "",
-  dataset: {
-    fileId: "",
-    filename: "",
-    recordCount: 0,
-    span: 0,
-    offset: 0,
-    dataColumn: null,
-    timeColumn: null,
-  },
+  dataset_id: "",
   params: {
-    split: 0,
-    iterations: 0,
-    patience: 0,
+    split: "",
+    iterations: "",
+    patience: "",
   },
   results: {
+    id: "",
     duration: "",
-    rmse: 0,
+    rmse: "",
   },
 };
 
@@ -54,23 +47,11 @@ const labSlice = createSlice({
       state.currentData.name = name;
       state.currentData.date = new Date().toLocaleDateString();
     },
-    setDatasetParams(state, action) {
-      const {
-        fileId,
-        filename,
-        recordCount,
-        span,
-        offset,
-        dataColumn,
-        timeColumn,
-      } = action.payload;
-      state.currentData.dataset.fileId = fileId;
-      state.currentData.dataset.filename = filename;
-      state.currentData.dataset.recordCount = recordCount;
-      state.currentData.dataset.span = span;
-      state.currentData.dataset.offset = offset || 0;
-      state.currentData.dataset.dataColumn = dataColumn;
-      state.currentData.dataset.timeColumn = timeColumn;
+    setDataset(state, action) {
+      state.currentData.dataset_id = action.payload;
+    },
+    setParams(state, action) {
+      state.currentData.params = action.payload;
     },
   },
 });

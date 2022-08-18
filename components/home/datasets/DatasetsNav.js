@@ -18,6 +18,7 @@ const DatasetsNav = () => {
   const selectedItems = useSelector((state) => state.datasets.selectedItems);
   const sortDesc = useSelector((state) => state.datasets.sortDesc);
   const selectAll = useSelector((state) => state.datasets.selectAll);
+  const currentItem = useSelector((state) => state.datasets.currentItem);
   const uploadModalShowing = useSelector(
     (state) => state.datasets.uploadModalShowing
   );
@@ -46,7 +47,7 @@ const DatasetsNav = () => {
 
     if (ids.length === 0) return;
     if (ids.length === 1)
-      setSingleSelected(items.filter((e) => e.fileId === ids[0])[0]?.filename);
+      setSingleSelected(items.filter((e) => e.fileId === ids[0])?.[0]?.filename);
 
     dispatch(datasetsActions.toggleDeleteModal());
   };
@@ -83,7 +84,7 @@ const DatasetsNav = () => {
             dispatch(datasetsActions.setCurrentItem(null));
           }}
         >
-          <Synopsis />
+          <Synopsis currentItem={currentItem} />
         </Modal>
       )}
       {deleteModalShowing && (

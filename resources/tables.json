@@ -1,0 +1,36 @@
+{
+    "experiments": {
+        "id": "",
+        "uid": "",
+        "name": "",
+        "date": "",
+        "datatset_id": "",
+        "params_id": "",
+        "results_id": ""
+    },
+    "datasets": {
+        "id": "",
+        "file_id": "",
+        "filename": "",
+        "file_size": "",
+        "date": "",
+        "record_count": "",
+        "span": "",
+        "offset": "",
+        "data_column": "",
+        "time_column": ""
+    },
+    "parameters": {
+        "id": "",
+        "params": {
+            "split": "",
+            "iterations": "",
+            "patience": ""
+        }
+    },
+    "results": {
+        "id": "",
+        "duration": "",
+        "rmse": ""
+    }
+}

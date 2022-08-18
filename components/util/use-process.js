@@ -1,6 +1,5 @@
 import { useState } from "react";
-
-const MIN_RECORDS = 0;
+import * as CONFIG from "../config/config";
 
 const useProcess = () => {
   const [columns, setColumns] = useState([]);
@@ -31,8 +30,10 @@ const useProcess = () => {
       setProcessStatus({ status: "failed", msg: "Failed to process dataset" });
       return;
     }
-    if (sortedColumns.length < MIN_RECORDS) {
-      setError(`A minimum of ${MIN_RECORDS} records must be selected`);
+    if (sortedColumns.length < CONFIG.NETWORK.MIN_RECORDS) {
+      setError(
+        `A minimum of ${CONFIG.NETWORK.MIN_RECORDS} records must be selected`
+      );
       setProcessStatus({ status: "failed", msg: "Failed to process dataset" });
       return;
     }

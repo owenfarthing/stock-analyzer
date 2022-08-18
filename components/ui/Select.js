@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Select = (props) => {
   const [title, setTitle] = useState(props.title);
@@ -28,6 +28,8 @@ const Select = (props) => {
   };
 
   useEffect(() => {
+    if (props.default) onSelect(props.default);
+
     clickListener(isListening, menuRef);
 
     return () => {
@@ -38,7 +40,11 @@ const Select = (props) => {
   }, []);
 
   return (
-    <div ref={menuRef} className="dropdown" style={{ padding: "10px" }}>
+    <div
+      ref={menuRef}
+      className="dropdown"
+      style={{ padding: "10px", width: "fit-content" }}
+    >
       <button
         className="btn btn-secondary dropdown-toggle"
         type="button"

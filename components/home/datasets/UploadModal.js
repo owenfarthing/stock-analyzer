@@ -10,12 +10,7 @@ import ProgressBar from "../../ui/ProgressBar";
 import Select from "../../ui/Select";
 import Input from "../../ui/Input";
 import useProcess from "../../util/use-process";
-
-const MAX_FILE_SIZE = 50;
-const ACCEPTED_FILE_TYPES = ["csv", "xlsx"];
-const MAX_COLUMNS_SHOWN = 10;
-const MAX_ROWS_SHOWN = 100;
-const MAX_COLUMN_OFFSET = 10;
+import * as CONFIG from "../../config/config";
 
 const onFileLoad = (rawFileContents) => {
   return rawFileContents.split("\n").map((row) => row.split(","));
@@ -41,7 +36,10 @@ const UploadModal = () => {
     if (inputStripped === NaN) return { valid: false, msg: "" };
 
     if (fileReader?.fileContents) {
-      if (inputStripped < 0 || inputStripped > MAX_COLUMN_OFFSET)
+      if (
+        inputStripped < 0 ||
+        inputStripped > CONFIG.DATASETS.MAX_COLUMN_OFFSET
+      )
         return {
           valid: false,
           msg: "",
@@ -54,10 +52,8 @@ const UploadModal = () => {
   const offsetInput = useInput(numberValidator);
 
   useEffect(() => {
-    if (offsetInput.isValid && offsetInput.touched && selectedFile)
-      setUploadDisabled(false);
-    else setUploadDisabled(true);
-  }, [offsetInput.isValid, offsetInput.touched, selectedFile]);
+    setUploadDisabled(!offsetInput.isValid || !selectedFile);
+  }, [offsetInput.isValid, selectedFile]);
 
   useEffect(() => {
     if (xAxis !== "" && yAxis !== "") setConfirmDisabled(false);
@@ -72,18 +68,22 @@ const UploadModal = () => {
     const file = event.target.files[0];
     setIsFileSelected(true);
 
-    if (file.size > MAX_FILE_SIZE * 10 ** 6) {
-      setInvalidFileMsg(`File size must be less than ${MAX_FILE_SIZE}MB.`);
+    if (file.size > CONFIG.DATASETS.MAX_FILE_SIZE * 10 ** 6) {
+      setInvalidFileMsg(
+        `File size must be less than ${CONFIG.DATASETS.MAX_FILE_SIZE}MB.`
+      );
       return;
     }
 
     if (
-      !ACCEPTED_FILE_TYPES.includes(
+      !CONFIG.DATASETS.ACCEPTED_FILE_TYPES.includes(
         file.name.slice(file.name.lastIndexOf(".") + 1)
       )
     ) {
       setInvalidFileMsg(
-        `File type must be one of: ${ACCEPTED_FILE_TYPES.join(", ")}`
+        `File type must be one of: ${CONFIG.DATASETS.ACCEPTED_FILE_TYPES.join(
+          ", "
+        )}`
       );
       return;
     }
@@ -101,7 +101,12 @@ const UploadModal = () => {
   };
 
   const getColumnNames = () => {
-    return fileReader.fileContents?.[0]?.slice(0, MAX_COLUMNS_SHOWN) || [];
+    return (
+      fileReader.fileContents?.[0]?.slice(
+        0,
+        CONFIG.DATASETS.MAX_COLUMNS_SHOWN
+      ) || []
+    );
   };
 
   const onSelectXHandler = (col) => {
@@ -113,13 +118,18 @@ const UploadModal = () => {
   };
 
   const onUploadHandler = () => {
+    if (!offsetInput.isValid) {
+      setUploadDisabled(true);
+      return;
+    }
+
     setChoosingFile(false);
     setUploadDisabled(true);
 
     fileReader.readFile(selectedFile, Number(offsetInput.input) || 0);
   };
 
-  const onFileProcessed = (data, span, records) => {
+  const onFileProcessed = (span, records) => {
     // Upload file to S3
     // Post file metadata to database
     if (fileProcessor.error) return;

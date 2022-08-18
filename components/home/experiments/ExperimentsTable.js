@@ -5,9 +5,7 @@ import useSizes from "../../util/use-sizes";
 import { experimentsActions } from "../../../store/experiments-slice";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
-const MAX_ENTRIES_PER_PAGE = 8;
-const MAX_PAGES = 5;
+import * as CONFIG from "../../config/config";
 
 const ExperimentsTable = () => {
   const sizeUtils = useSizes();
@@ -20,7 +18,9 @@ const ExperimentsTable = () => {
   useEffect(() => {
     dispatch(
       experimentsActions.setPages(
-        items.length === 0 ? 1 : Math.ceil(items.length / MAX_ENTRIES_PER_PAGE)
+        items.length === 0
+          ? 1
+          : Math.ceil(items.length / CONFIG.EXPERIMENTS.MAX_ENTRIES_PER_PAGE)
       )
     );
   }, [items]);
@@ -36,11 +36,14 @@ const ExperimentsTable = () => {
   }, [sortDesc]);
 
   const pageStart = () => {
-    return currentPage * MAX_ENTRIES_PER_PAGE;
+    return currentPage * CONFIG.EXPERIMENTS.MAX_ENTRIES_PER_PAGE;
   };
 
   const pageEnd = () => {
-    return currentPage * MAX_ENTRIES_PER_PAGE + MAX_ENTRIES_PER_PAGE;
+    return (
+      currentPage * CONFIG.EXPERIMENTS.MAX_ENTRIES_PER_PAGE +
+      CONFIG.EXPERIMENTS.MAX_ENTRIES_PER_PAGE
+    );
   };
 
   return (
