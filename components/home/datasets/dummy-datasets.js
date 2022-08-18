@@ -1,5 +1,6 @@
 export const dummyDatasets = [
   {
+    id: 1,
     fileId: "1234",
     filename: "Data.xlsx",
     fileSize: 1024,
@@ -11,6 +12,7 @@ export const dummyDatasets = [
     timeColumn: null,
   },
   {
+    id: 2,
     fileId: "1235",
     filename: "my_stuff.txt",
     fileSize: 1024,
@@ -22,6 +24,7 @@ export const dummyDatasets = [
     timeColumn: null,
   },
   {
+    id: 3,
     fileId: "1236",
     filename: "Untitled 1",
     fileSize: 1024,
